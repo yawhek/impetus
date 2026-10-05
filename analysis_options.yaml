@@ -1,0 +1,18 @@
+include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - "build/**"
+
+linter:
+  rules:
+    public_member_api_docs: false
+    lines_longer_than_80_chars: false
+    require_trailing_commas: false
+    sort_pub_dependencies: false
+    cascade_invocations: false
+    use_string_buffers: false
+    sort_constructors_first: false
+    directives_ordering: false
+    omit_local_variable_types: false
+    flutter_style_todos: false
