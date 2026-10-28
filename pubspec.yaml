@@ -1,5 +1,5 @@
 name: impetus
-description: A new Flutter project.
+description: Applicazione mobile Flutter per supporto allenamento e analisi tecnica.
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -10,6 +10,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  hive_flutter: ^1.1.0
+  flutter_riverpod: ^2.6.1
+  path_provider: ^2.1.3
+  google_fonts: ^6.1.0
+  flutter_secure_storage: ^9.0.0
 
 dev_dependencies:
   flutter_test:
