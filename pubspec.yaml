@@ -1,5 +1,5 @@
 name: impetus
-description: Applicazione mobile Flutter per supporto allenamento e analisi tecnica.
+description: Applicazione mobile Flutter per analisi cinematica nella kickboxing.
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -13,6 +13,11 @@ dependencies:
 
   hive_flutter: ^1.1.0
   flutter_riverpod: ^2.6.1
+  firebase_core: ^4.9.0
+  firebase_auth: ^6.5.1
+  cloud_firestore: ^6.4.1
+  firebase_analytics: ^12.4.1
+
   path_provider: ^2.1.3
   google_fonts: ^6.1.0
   flutter_secure_storage: ^9.0.0
