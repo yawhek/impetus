@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,28 +10,69 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:impetus/core/globals.dart';
 import 'package:impetus/core/navigation_provider.dart';
 import 'package:impetus/core/ui_constants.dart';
+import 'package:impetus/features/auth/providers/auth_provider.dart';
+import 'package:impetus/features/auth/screens/login_screen.dart';
+import 'package:impetus/firebase_options.dart';
 import 'package:path_provider/path_provider.dart';
 
 Future<HiveAesCipher> _initEncryptedHive() async {
   final appDir = await getApplicationDocumentsDirectory();
   Hive.init(appDir.path);
   const secureStorage = FlutterSecureStorage();
-  final existing = await secureStorage.read(key: 'hive_key');
-  if (existing != null) {
-    return HiveAesCipher(base64Url.decode(existing));
+  try {
+    final existing = await secureStorage.read(key: 'hive_key');
+    if (existing != null) {
+      return HiveAesCipher(base64Url.decode(existing));
+    }
+    final key = Hive.generateSecureKey();
+    await secureStorage.write(key: 'hive_key', value: base64UrlEncode(key));
+    return HiveAesCipher(key);
+  } catch (e) {
+    debugPrint('Errore lettura keystore Hive: $e');
+    final fallbackKey = Hive.generateSecureKey();
+    return HiveAesCipher(fallbackKey);
   }
-  final key = Hive.generateSecureKey();
-  await secureStorage.write(key: 'hive_key', value: base64UrlEncode(key));
-  return HiveAesCipher(key);
 }
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final cipher = await _initEncryptedHive();
+
+  try {
+    if (Firebase.apps.isEmpty) {
+      if (DefaultFirebaseOptions.isConfiguredForCurrentPlatform) {
+        await Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform,
+        );
+      } else {
+        await Firebase.initializeApp();
+      }
+    }
+  } catch (e) {
+    debugPrint('Inizializzazione Firebase non attiva (modalità locale): $e');
+  }
+
+  if (Firebase.apps.isNotEmpty) {
+    try {
+      await FirebaseAnalytics.instance.logAppOpen();
+    } catch (e) {
+      debugPrint('Firebase Analytics non disponibile: $e');
+    }
+  }
+
+  final hiveInit = await _initEncryptedHive();
   final openedProfileBox =
-      await Hive.openBox<dynamic>('user_profile', encryptionCipher: cipher);
+      await Hive.openBox<dynamic>('user_profile', encryptionCipher: hiveInit);
   final openedHistoryBox =
-      await Hive.openBox<dynamic>('workout_history', encryptionCipher: cipher);
+      await Hive.openBox<dynamic>('workout_history', encryptionCipher: hiveInit);
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarIconBrightness: Brightness.light,
+    ),
+  );
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   runApp(
     ProviderScope(
@@ -85,7 +129,33 @@ class ImpetusApp extends StatelessWidget {
           labelStyle: const TextStyle(color: Colors.white70),
         ),
       ),
-      home: const MainScreen(),
+      home: const AuthWrapper(),
+    );
+  }
+}
+
+class AuthWrapper extends ConsumerWidget {
+  const AuthWrapper({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authStateChangesProvider);
+    final isGuest = ref.watch(isGuestProvider);
+    if (isGuest) return const MainScreen();
+    return authState.when(
+      data: (user) => user != null ? const MainScreen() : const LoginScreen(),
+      loading: () => const Scaffold(
+        backgroundColor: UIConstants.deepBlack,
+        body: Center(
+          child: CircularProgressIndicator(color: UIConstants.primaryCyan),
+        ),
+      ),
+      error: (e, trace) => Scaffold(
+        backgroundColor: UIConstants.deepBlack,
+        body: Center(
+          child: Text('Errore: $e', style: const TextStyle(color: Colors.red)),
+        ),
+      ),
     );
   }
 }
