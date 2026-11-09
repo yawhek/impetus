@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:impetus/core/globals.dart';
 import 'package:impetus/core/navigation_provider.dart';
+import 'package:impetus/core/services/sync_service.dart';
 import 'package:impetus/core/ui_constants.dart';
 
 final firebaseAuthProvider = Provider<FirebaseAuth?>((ref) {
@@ -132,6 +134,10 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
     state = const AsyncLoading();
     try {
       await _auth?.signOut();
+      await SyncService.clearLocalUserData(
+        _ref.read(profileBoxProvider),
+        _ref.read(historyBoxProvider),
+      );
       if (!mounted) return;
       _ref.read(navigationProvider.notifier).state = AppTab.academy;
       _ref.read(isGuestProvider.notifier).state = false;
