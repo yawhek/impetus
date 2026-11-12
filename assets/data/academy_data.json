@@ -1,0 +1,132 @@
+[
+  {
+    "nomeSettore": "Tatami (Contatto Leggero)",
+    "icona": "Icons.sports_martial_arts",
+    "descrizione": "Programma didattico della Kickboxing specialità a contatto leggero (Point Fighting, Light Contact, Kick Light).",
+    "programmiEsame": [
+      {
+        "grado": "Da Cintura Bianca a Cintura Gialla",
+        "tempistica": "dal 1° al 6° mese",
+        "criteriValutazione": [
+          "Capacità di comprensione delle tecniche richieste",
+          "Coordinazione generale",
+          "Equilibrio statico",
+          "Valutazione della guardia",
+          "Valutazione degli spostamenti in varie direzioni restando in guardia",
+          "Valutazione dei colpi di braccia e di gambe appresi (pugni e calci)",
+          "Valutazione della capacità di spostamento e semi spostamento in relazione alla distanza richiesta",
+          "REQUISITO: Tutti i pugni",
+          "REQUISITO: Calci frontali e circolari al corpo (nel caso dei circolari anche bassi)",
+          "REQUISITO: Spostamenti e Semi spostamenti"
+        ],
+        "categorie": [
+          {
+            "nomeCategoria": "1. Posizione di guardia",
+            "tecniche": [
+              {
+                "id": "tat_bg_01",
+                "titolo": "Assetto e Guardia",
+                "difficolta": "Base",
+                "fasiEsecuzione": [
+                  "Guardia Ortodossa o Sinistra (mano e piede sinistro in avanti) in equilibrio statico.",
+                  "Guardia Mancina o Destra (mano e piede destro in avanti) in equilibrio statico.",
+                  "Concetto di Guardia intesa come posizione 'iniziale' e 'finale' a inizio e conclusione della tecnica."
+                ],
+                "erroriComuni": [],
+                "disciplineAmmesse": [],
+                "varianti": {}
+              }
+            ]
+          },
+          {
+            "nomeCategoria": "2. Capacità di movimento in guardia",
+            "tecniche": [
+              {
+                "id": "tat_bg_02",
+                "titolo": "Movimento base",
+                "difficolta": "Base",
+                "fasiEsecuzione": [
+                  "Capacità di avanzamento ed arretramento senza perdita di controllo della guardia."
+                ],
+                "erroriComuni": [],
+                "disciplineAmmesse": [],
+                "varianti": {}
+              }
+            ]
+          },
+          {
+            "nomeCategoria": "3. Colpi con gli arti superiori",
+            "tecniche": [
+              {
+                "id": "tat_bg_03",
+                "titolo": "Tecniche di Pugno",
+                "difficolta": "Base",
+                "fasiEsecuzione": [
+                  "Jab",
+                  "Diretto sx, diretto dx (al corpo ed al viso)",
+                  "Gancio sx, gancio dx (al corpo ed al viso)",
+                  "Montante sx, montante dx (al corpo ed al viso)",
+                  "Colpo con il dorso della mano (braccio anteriore, specialità Point Fighting)"
+                ],
+                "erroriComuni": [],
+                "disciplineAmmesse": [],
+                "varianti": {}
+              }
+            ]
+          },
+          {
+            "nomeCategoria": "4. Colpi con gli arti inferiori",
+            "tecniche": [
+              {
+                "id": "tat_bg_04",
+                "titolo": "Tecniche di Calcio",
+                "difficolta": "Base",
+                "fasiEsecuzione": [
+                  "Calcio frontale sx e dx (al corpo)",
+                  "Calcio circolare sx e dx colpi (sulla coscia, low kick, e al corpo)."
+                ],
+                "erroriComuni": [],
+                "disciplineAmmesse": [],
+                "varianti": {}
+              }
+            ]
+          },
+          {
+            "nomeCategoria": "5. Spostamenti e semi spostamenti",
+            "tecniche": [
+              {
+                "id": "tat_bg_05",
+                "titolo": "Gestione della distanza",
+                "difficolta": "Base",
+                "fasiEsecuzione": [
+                  "Semi spostamenti -Spostamenti avanti che diminuiscono la distanza con l'avversario: Semi spostamenti -spostamenti in avanti",
+                  "Spostamenti e semi spostamenti che mantengono la distanza con l'avversario: Semi spostamenti -Spostamento laterale a sx/ Semi spostamenti -spostamento laterale a dx",
+                  "Spostamenti indietro e semi spostamenti che aumentano la distanza con l'avversario: Semi spostamenti -spostamenti indietro"
+                ],
+                "erroriComuni": [],
+                "disciplineAmmesse": [],
+                "varianti": {}
+              }
+            ]
+          },
+          {
+            "nomeCategoria": "6. Applicazione pratica",
+            "tecniche": [
+              {
+                "id": "tat_bg_06",
+                "titolo": "Serie e Combinazioni",
+                "difficolta": "Base",
+                "fasiEsecuzione": [
+                  "Applicazione dei colpi in serie e dei colpi in combinazione con l'utilizzo delle tecniche apprese"
+                ],
+                "erroriComuni": [],
+                "disciplineAmmesse": [],
+                "varianti": {}
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
