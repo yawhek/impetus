@@ -49,6 +49,10 @@ class OneEuroFilter {
   double? _prevRawValue;
 
   double filter(double value, [double? timestampSeconds]) {
+    if (!value.isFinite) {
+      return _xFilter.isInitialized ? _xFilter.s : 0.0;
+    }
+
     final now = timestampSeconds ??
         (DateTime.now().microsecondsSinceEpoch / 1000000.0);
 
@@ -59,6 +63,16 @@ class OneEuroFilter {
     }
 
     final dt = now - _lastTime!;
+    if (dt > 0.5) {
+      // Occlusione prolungata: azzero lo stato per evitare picchi di derivata alla ripresa
+      reset();
+      _lastTime = now;
+      _prevRawValue = value;
+      return _xFilter.filter(value);
+    }
+    if (dt <= 0.0) {
+      return _xFilter.isInitialized ? _xFilter.s : value;
+    }
     _lastTime = now;
 
     final dx = (value - (_prevRawValue ?? value)) / dt;

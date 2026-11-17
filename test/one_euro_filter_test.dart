@@ -53,5 +53,33 @@ void main() {
       expect(output, greaterThan(255));
     });
 
+    test('gestisce valori NaN/infiniti senza corrompere lo stato interno', () {
+      final filter = OneEuroFilter();
+      final uninitializedNan = filter.filter(double.nan, 0);
+      expect(uninitializedNan, 0);
+
+      final v1 = filter.filter(50, 0.033);
+      expect(v1, 50);
+
+      final duringNan = filter.filter(double.nan, 0.066);
+      final duringInf = filter.filter(double.infinity, 0.100);
+      expect(duringNan.isFinite, isTrue);
+      expect(duringNan, 50);
+      expect(duringInf, 50);
+
+      final recovered = filter.filter(52, 0.133);
+      expect(recovered.isFinite, isTrue);
+      expect(recovered, greaterThan(50));
+    });
+
+    test('esegue reset automatico dopo occlusione prolungata (dt > 0.5 s)', () {
+      final filter = OneEuroFilter(minCutoff: 0.8, beta: 0.01);
+      filter.filter(10, 0);
+      filter.filter(10, 0.033);
+
+      // Dopo >0.5s lo stato deve azzerarsi e riagganciarsi immediatamente al nuovo valore
+      final afterGap = filter.filter(250, 0.70);
+      expect(afterGap, 250);
+    });
   });
 }
