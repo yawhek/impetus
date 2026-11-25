@@ -12,8 +12,10 @@ import 'package:impetus/core/globals.dart';
 import 'package:impetus/core/navigation_provider.dart';
 import 'package:impetus/core/services/sync_service.dart';
 import 'package:impetus/core/ui_constants.dart';
+import 'package:impetus/features/academy/screens/academy_page.dart';
 import 'package:impetus/features/auth/providers/auth_provider.dart';
 import 'package:impetus/features/auth/screens/login_screen.dart';
+import 'package:impetus/features/training/screens/training_page.dart';
 import 'package:impetus/firebase_options.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -291,18 +293,18 @@ class MainScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentTab = ref.watch(navigationProvider);
+
     return Scaffold(
-      body: Center(
-        child: Text(
-          currentTab == AppTab.academy ? 'Modulo Academy' : 'Modulo Coach',
-          style: const TextStyle(color: Colors.white, fontSize: 18),
-        ),
-      ),
+      extendBody: true,
+      body: currentTab == AppTab.academy
+          ? const AcademyPage()
+          : const TrainingPage(),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: UIConstants.surfaceGrey,
         selectedItemColor: UIConstants.primaryCyan,
         unselectedItemColor: Colors.grey.shade600,
         currentIndex: currentTab.indexValue,
+        type: BottomNavigationBarType.fixed,
         onTap: (index) {
           HapticFeedback.mediumImpact();
           ref.read(navigationProvider.notifier).state = AppTab.values[index];
